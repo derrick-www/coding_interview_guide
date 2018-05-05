@@ -1,54 +1,44 @@
-//由两个栈组成的队列
 #include <iostream>
 #include <stack>
 using namespace std;
 
 class Solution {
-    stack<int> stackPush;
-    stack<int> stackPop;
 public:
-    void push(int elem) {
-        stackPush.push(elem);
-    }
-
-    void pop() {
-        if (stackPush.empty() && stackPop.empty()) {
-
-        } else if (stackPop.empty()) {
-            while (!stackPush.empty()) {
-                int temp = stackPush.top();
-                stackPush.pop();
-                stackPop.push(temp);
-            }
+    void reverseStack(stack<int> &stackRev) {
+        if (stackRev.empty()) {
+            return;
         }
-        stackPop.pop();
+        int i = getAndRemoveLastElem(stackRev);
+        reverseStack(stackRev);
+        stackRev.push(i);
     }
-
-    int front() {
-        if (stackPush.empty() && stackPop.empty()) {
-
-        } else if (stackPop.empty()) {
-            while (!stackPush.empty()) {
-                int temp = stackPush.top();
-                stackPush.pop();
-                stackPop.push(temp);
-            }
+private:
+    int getAndRemoveLastElem(stack<int> &stackRev) {
+        int i = stackRev.top();
+        stackRev.pop();
+        if (stackRev.empty()) {
+            return i;
+        } else {
+            int last = getAndRemoveLastElem(stackRev);
+            stackRev.push(i);
+            return last;
         }
-        return stackPop.top();
     }
 };
 
 int main() {
     Solution s;
-    s.push(1);
-    s.push(2);
-    s.push(3);
-    cout << "s.front()" << s.front() << endl;
-    s.pop();
-    cout << "s.front()" << s.front() << endl;
-    s.pop();
-    cout << "s.front()" << s.front() << endl;
-    s.pop();
+    stack<int> stackRev;
+    stackRev.push(1);
+    stackRev.push(2);
+    stackRev.push(3);
+    s.reverseStack(stackRev);
+    cout << stackRev.top() << endl;
+    stackRev.pop();
+    cout << stackRev.top() << endl;
+    stackRev.pop();
+    cout << stackRev.top() << endl;
+    stackRev.pop();
+
 
 }
-
